@@ -15,11 +15,13 @@ mongoose
 app.use(bodyParser.json())
 
 // Require Routes
-
+const student = require('./routes/api/student')
 
 // End Point API List
+app.use('/api/student', student)
+
 app.get('/', (req, res) => {
-	res.send("root api test ...")
+	res.send("/root : you're not awesome madafaka !")
 })
 
 // Running Server
