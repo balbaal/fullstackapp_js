@@ -16,11 +16,55 @@ router.post("/", (req, res) => {
     majoring: req.body.majoring
   });
 
-  res.send(newStudent).status(201);
   newStudent
     .save()
     .then(result => res.status(201).json(result))
     .catch(err => res.json(err).status(400));
+});
+
+// @route     GET api/student
+// @desc      Show All Student
+// @access    Public
+router.get("/", (req, res) => {
+  StudentModel.find()
+    .then(result => {
+      if (result.length > 0) {
+        res.json(result).status(200);
+      } else {
+        res.json({ message: "Data Not Available" }).status(200);
+      }
+    })
+    .catch(err => res.json(err).status(500));
+});
+
+// @route   GET api/student/:id
+// @desc    Show Detail Student
+// @access  Public
+router.get("/:id", (req, res) => {
+  StudentModel.findById(req.params.id)
+    .then(result => {
+      res.send(result).status(200);
+      console.log(result);
+    })
+    .catch(err => res.send(err).status(400));
+});
+
+// @route   PUT api/student/:id
+// @desc    Update Student
+// @access  Public
+router.put("/:id", (req, res) => {
+  StudentModel.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    .then(result => res.send(result).status(200))
+    .catch(err => res.send(err).status(400));
+});
+
+// @route DELETE api/student/:id
+// @desc  Delete Student
+// @access Public
+router.delete("/:id", (req, res) => {
+  StudentModel.findByIdAndDelete(req.params.id)
+    .then(() => res.status(200).json({ success: true }))
+    .catch(err => res.status(404).json({ success: false }));
 });
 
 module.exports = router;
