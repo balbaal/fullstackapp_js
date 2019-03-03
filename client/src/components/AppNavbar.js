@@ -19,8 +19,6 @@ class AppNavbar extends Component{
         this.setState({
             isOpen: !this.state.isOpen
         })
-
-        this.props.onLoading(this.state.isOpen)
     }
 
     render(){
@@ -37,7 +35,7 @@ class AppNavbar extends Component{
                                 </NavItem>
                                 <NavItem>
                                     <NavLink href="/student_list">Student List</NavLink>
-                                </NavItem>
+                                </NavItem>  
                                 <NavItem>
                                     <NavLink href="/college_list">College List</NavLink>
                                 </NavItem>
