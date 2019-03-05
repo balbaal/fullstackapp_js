@@ -1,51 +1,59 @@
-import React, {Component} from "react"
+import React, { Component } from "react";
 import {
-    Container,
-    Collapse,
-    Navbar,
-    NavbarBrand,
-    NavbarToggler,
-    Nav,
-    NavItem,
-    NavLink
-} from "reactstrap"
+  Container,
+  Collapse,
+  Navbar,
+  NavbarBrand,
+  NavbarToggler,
+  Nav,
+  NavItem,
+  NavLink
+} from "reactstrap";
 
-class AppNavbar extends Component{
-    state = {
-        isOpen:false
-    }
+import { Link } from "react-router-dom";
 
-    toggle = () => {
-        this.setState({
-            isOpen: !this.state.isOpen
-        })
-    }
+class AppNavbar extends Component {
+  state = {
+    isOpen: false
+  };
 
-    render(){
-        return (
-            <div>
-                <Navbar color="dark" dark expand="sm" className="mb-5">
-                    <Container>
-                        <NavbarBrand href="/">Full App</NavbarBrand>
-                        <NavbarToggler onClick={this.toggle}></NavbarToggler>
-                        <Collapse isOpen={this.state.isOpen} navbar>
-                            <Nav className="ml-auto" navbar>
-                                <NavItem>
-                                    <NavLink href="/about">About</NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <NavLink href="/student_list">Student List</NavLink>
-                                </NavItem>  
-                                <NavItem>
-                                    <NavLink href="/college_list">College List</NavLink>
-                                </NavItem>
-                            </Nav>
-                        </Collapse>
-                    </Container>
-                </Navbar>
-            </div>
-        )
-    }
+  toggle = () => {
+    this.setState({
+      isOpen: !this.state.isOpen
+    });
+  };
+
+  render() {
+    return (
+      <div>
+        <Navbar color="dark" dark expand="sm" className="mb-5">
+          <Container>
+            <NavbarBrand href="/">Full App</NavbarBrand>
+            <NavbarToggler onClick={this.toggle} />
+            <Collapse isOpen={this.state.isOpen} navbar>
+              <Nav className="ml-auto" navbar>
+                <NavItem>
+                  <Link to="/">
+                    <NavLink>About</NavLink>
+                  </Link>
+                </NavItem>
+                <NavItem>
+                  <Link to="student_list">
+                    <NavLink>Student List</NavLink>
+                  </Link>
+                </NavItem>
+                <NavItem>
+                  <Link to="college_list">
+                    <NavLink>College List</NavLink>
+                  </Link>
+                </NavItem>
+              </Nav>
+            </Collapse>
+          </Container>
+        </Navbar>
+      </div>
+    );
+  }
 }
 
-export default AppNavbar
+export default AppNavbar;
