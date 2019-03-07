@@ -12,13 +12,12 @@ import {
   Label,
   Input
 } from "reactstrap";
-import uuid from "uuid";
+
+import { connect } from "react-redux";
+import { getStudents } from "../actions/studentActions";
 
 class StudentList extends React.Component {
   state = {
-    students: [
-      { name: "balbaal", identification_number: "758jfkd", college: "", majoring: "", year: "" },
-    ],
     modal: false
   };
 
@@ -28,8 +27,12 @@ class StudentList extends React.Component {
     }));
   };
 
+  componentDidMount() {
+    this.props.getStudents();
+  }
+
   render() {
-    const { students } = this.state;
+    const { students } = this.props.student;
     return (
       <div>
         <Container>
@@ -145,4 +148,11 @@ class StudentList extends React.Component {
   }
 }
 
-export default StudentList;
+const mapStateToProps = state => ({
+  student: state.student
+});
+
+export default connect(
+  mapStateToProps,
+  { getStudents }
+)(StudentList);

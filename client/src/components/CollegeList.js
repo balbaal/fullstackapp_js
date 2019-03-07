@@ -12,13 +12,12 @@ import {
   Label,
   Input
 } from "reactstrap";
-import uuid from "uuid";
+
+import { connect } from "react-redux";
+import { getColleges } from "../actions/collegeActions";
 
 class CollegeList extends React.Component {
   state = {
-    colleges: [
-      { id: "l3758jfkd", college: "University Of Indonesia" },
-    ],
     modal: false
   };
 
@@ -28,8 +27,12 @@ class CollegeList extends React.Component {
     }));
   };
 
+  componentDidMount() {
+    this.props.getColleges();
+  }
+
   render() {
-    const { colleges } = this.state;
+    const { colleges } = this.props.college;
     return (
       <div>
         <Container>
@@ -48,7 +51,7 @@ class CollegeList extends React.Component {
             <tbody>
               {colleges.map(college => (
                 <tr>
-                  <td>{college.id}</td>
+                  <td>{college._id}</td>
                   <td>{college.college}</td>
                   <td>
                     <Button
@@ -83,16 +86,13 @@ class CollegeList extends React.Component {
             <ModalBody>
               <Form>
                 <FormGroup>
-                  <Label for="college">
-                      College Name
-                  </Label>
+                  <Label for="college">College Name</Label>
                   <Input
                     type="text"
                     name="college"
                     id="college"
                     placeholder="with a placeholder"
                   />
-                  
                 </FormGroup>
               </Form>
             </ModalBody>
@@ -111,4 +111,11 @@ class CollegeList extends React.Component {
   }
 }
 
-export default CollegeList;
+const mapStateToProps = state => ({
+  college: state.college
+});
+
+export default connect(
+  mapStateToProps,
+  { getColleges }
+)(CollegeList);
