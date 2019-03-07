@@ -8,12 +8,6 @@ import { deleteStudent } from "../actions/studentActions";
 import StudentModal from "./StudentModal";
 
 class StudentList extends React.Component {
-  toggle = () => {
-    this.setState(prevState => ({
-      modal: !prevState.modal
-    }));
-  };
-
   onDeleteStudent = id => {
     this.props.deleteStudent(id);
   };
@@ -40,27 +34,37 @@ class StudentList extends React.Component {
               </tr>
             </thead>
             <tbody>
-              {students.map(student => (
-                <tr key={student.identification_number}>
-                  <td>{student.identification_number}</td>
-                  <td>{student.name}</td>
-                  <td>{student.college}</td>
-                  <td>{student.majoring}</td>
-                  <td>{student.year}</td>
-                  <td>
-                    <Button
-                      onClick={() =>
-                        this.onDeleteStudent(student.identification_number)
-                      }
-                      className="remove-btn"
-                      color="danger"
-                      size="sm"
-                    >
-                      &times;
-                    </Button>
+              {students.length === 0 ? (
+                <tr>
+                  <td colSpan="6">
+                    <h3 style={{ textAlign: "center" }}>
+                      data isn't available . . .
+                    </h3>
                   </td>
                 </tr>
-              ))}
+              ) : (
+                students.map(student => (
+                  <tr key={student.identification_number}>
+                    <td>{student.identification_number}</td>
+                    <td>{student.name}</td>
+                    <td>{student.college}</td>
+                    <td>{student.majoring}</td>
+                    <td>{student.year}</td>
+                    <td>
+                      <Button
+                        onClick={() =>
+                          this.onDeleteStudent(student.identification_number)
+                        }
+                        className="remove-btn"
+                        color="danger"
+                        size="sm"
+                      >
+                        &times;
+                      </Button>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </Table>
         </Container>
