@@ -1,30 +1,21 @@
 import React from "react";
-import {
-  Container,
-  Button,
-  Table,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Form,
-  FormGroup,
-  Label,
-  Input
-} from "reactstrap";
+import { Container, Button, Table } from "reactstrap";
 
 import { connect } from "react-redux";
 import { getStudents } from "../actions/studentActions";
+import { deleteStudent } from "../actions/studentActions";
+
+import StudentModal from "./StudentModal";
 
 class StudentList extends React.Component {
-  state = {
-    modal: false
-  };
-
   toggle = () => {
     this.setState(prevState => ({
       modal: !prevState.modal
     }));
+  };
+
+  onDeleteStudent = id => {
+    this.props.deleteStudent(id);
   };
 
   componentDidMount() {
@@ -36,10 +27,7 @@ class StudentList extends React.Component {
     return (
       <div>
         <Container>
-          <Button className="newData-btn" onClick={this.toggle}>
-            New Student
-          </Button>
-
+          <StudentModal />
           <Table striped>
             <thead>
               <tr>
@@ -53,7 +41,7 @@ class StudentList extends React.Component {
             </thead>
             <tbody>
               {students.map(student => (
-                <tr>
+                <tr key={student.identification_number}>
                   <td>{student.identification_number}</td>
                   <td>{student.name}</td>
                   <td>{student.college}</td>
@@ -61,13 +49,9 @@ class StudentList extends React.Component {
                   <td>{student.year}</td>
                   <td>
                     <Button
-                      onClick={() => {
-                        this.setState(state => ({
-                          students: state.students.filter(
-                            xstudent => xstudent.id !== student.id
-                          )
-                        }));
-                      }}
+                      onClick={() =>
+                        this.onDeleteStudent(student.identification_number)
+                      }
                       className="remove-btn"
                       color="danger"
                       size="sm"
@@ -80,69 +64,6 @@ class StudentList extends React.Component {
             </tbody>
           </Table>
         </Container>
-
-        {/* modal */}
-        <div>
-          <Modal
-            isOpen={this.state.modal}
-            toggle={this.toggle}
-            className={this.props.className}
-          >
-            <ModalHeader toggle={this.toggle}>New Student</ModalHeader>
-            <ModalBody>
-              <Form>
-                <FormGroup>
-                  <Label for="identification_number">
-                    Identification Number
-                  </Label>
-                  <Input
-                    type="text"
-                    name="identification_number"
-                    id="identification_number"
-                    placeholder="with a placeholder"
-                  />
-                  <Label for="name">Name</Label>
-                  <Input
-                    type="text"
-                    name="name"
-                    id="name"
-                    placeholder="with a placeholder"
-                  />
-                  <Label for="college">College</Label>
-                  <Input type="select" name="college" id="college">
-                    <option>- Select College -</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                  </Input>
-                  <Label for="majoring">Majoring</Label>
-                  <Input
-                    type="text"
-                    name="majoring"
-                    id="majoring"
-                    placeholder="with a placeholder"
-                  />
-                  <Label for="name">year</Label>
-                  <Input
-                    type="number"
-                    name="year"
-                    id="year"
-                    placeholder="with a placeholder"
-                  />
-                </FormGroup>
-              </Form>
-            </ModalBody>
-            <ModalFooter>
-              <Button color="primary" onClick={this.toggle}>
-                Submit
-              </Button>{" "}
-              <Button color="secondary" onClick={this.toggle}>
-                Cancel
-              </Button>
-            </ModalFooter>
-          </Modal>
-        </div>
       </div>
     );
   }
@@ -154,5 +75,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getStudents }
+  { getStudents, deleteStudent }
 )(StudentList);

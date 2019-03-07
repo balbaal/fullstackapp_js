@@ -5,3 +5,17 @@ export const getStudents = () => {
     type: GET_STUDENTS
   };
 };
+
+export const deleteStudent = id => {
+  return {
+    type: DELETE_STUDENT,
+    payload: id
+  };
+};
+
+export const addStudent = data => {
+  return {
+    type: ADD_STUDENT,
+    payload: data
+  };
+};
