@@ -17,6 +17,14 @@ export default function(state = initialState, action) {
         colleges: [action.payload, ...state.colleges]
       };
 
+    case DELETE_COLLEGE:
+      return {
+        ...state,
+        colleges: state.colleges.filter(
+          college => college._id !== action.payload
+        )
+      };
+
     default:
       return state;
   }

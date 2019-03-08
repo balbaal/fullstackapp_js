@@ -14,7 +14,11 @@ import {
 } from "reactstrap";
 
 import { connect } from "react-redux";
-import { getColleges, addCollege } from "../actions/collegeActions";
+import {
+  getColleges,
+  addCollege,
+  deleteCollege
+} from "../actions/collegeActions";
 
 class CollegeList extends React.Component {
   constructor(props) {
@@ -41,6 +45,11 @@ class CollegeList extends React.Component {
     this.toggle();
   };
 
+  onDeleteCollege = id => {
+    this.props.deleteCollege(id);
+    // alert(id)
+  };
+
   componentDidMount() {
     this.props.getColleges();
   }
@@ -63,28 +72,32 @@ class CollegeList extends React.Component {
               </tr>
             </thead>
             <tbody>
-              {colleges.map(college => (
-                <tr key={college._id}>
-                  <td>{college._id}</td>
-                  <td>{college.college}</td>
-                  <td>
-                    <Button
-                      onClick={() => {
-                        this.setState(state => ({
-                          colleges: state.colleges.filter(
-                            xcollege => xcollege.id !== college.id
-                          )
-                        }));
-                      }}
-                      className="remove-btn"
-                      color="danger"
-                      size="sm"
-                    >
-                      &times;
-                    </Button>
+              {colleges.length === 0 ? (
+                <tr>
+                  <td colSpan="3">
+                    <h3 style={{ textAlign: "center" }}>
+                      data isn't available
+                    </h3>
                   </td>
                 </tr>
-              ))}
+              ) : (
+                colleges.map(college => (
+                  <tr key={college._id}>
+                    <td>{college._id}</td>
+                    <td>{college.college}</td>
+                    <td>
+                      <Button
+                        onClick={() => this.onDeleteCollege(college._id)}
+                        className="remove-btn"
+                        color="danger"
+                        size="sm"
+                      >
+                        &times;
+                      </Button>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </Table>
         </Container>
@@ -132,5 +145,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getColleges, addCollege }
+  { getColleges, addCollege, deleteCollege }
 )(CollegeList);

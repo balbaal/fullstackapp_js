@@ -12,3 +12,10 @@ export const addCollege = data => {
     payload: data
   };
 };
+
+export const deleteCollege = id => {
+  return {
+    type: DELETE_COLLEGE,
+    payload: id
+  };
+};
