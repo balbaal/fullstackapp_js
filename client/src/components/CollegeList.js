@@ -20,31 +20,9 @@ import {
   deleteCollege
 } from "../actions/collegeActions";
 
+import CollegeModal from "./CollegeModal";
+
 class CollegeList extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      modal: false
-    };
-
-    this.college_input = React.createRef();
-  }
-
-  toggle = () => {
-    this.setState(prevState => ({
-      modal: !prevState.modal
-    }));
-  };
-
-  onAddCollege = () => {
-    const data = {
-      _id: Math.random(),
-      college: this.college_input.current.value
-    };
-    this.props.addCollege(data);
-    this.toggle();
-  };
-
   onDeleteCollege = id => {
     this.props.deleteCollege(id);
     // alert(id)
@@ -59,10 +37,7 @@ class CollegeList extends React.Component {
     return (
       <div>
         <Container>
-          <Button className="newData-btn" onClick={this.toggle}>
-            New College
-          </Button>
-
+          <CollegeModal />
           <Table striped>
             <thead>
               <tr>
@@ -101,39 +76,6 @@ class CollegeList extends React.Component {
             </tbody>
           </Table>
         </Container>
-
-        {/* modal */}
-        <div>
-          <Modal
-            isOpen={this.state.modal}
-            toggle={this.toggle}
-            className={this.props.className}
-          >
-            <ModalHeader toggle={this.toggle}>New college</ModalHeader>
-            <ModalBody>
-              <Form>
-                <FormGroup>
-                  <Label for="college">College Name</Label>
-                  <Input
-                    type="text"
-                    innerRef={this.college_input}
-                    name="college"
-                    id="college"
-                    placeholder="with a placeholder"
-                  />
-                </FormGroup>
-              </Form>
-            </ModalBody>
-            <ModalFooter>
-              <Button color="primary" onClick={this.onAddCollege}>
-                Submit
-              </Button>{" "}
-              <Button color="secondary" onClick={this.toggle}>
-                Cancel
-              </Button>
-            </ModalFooter>
-          </Modal>
-        </div>
       </div>
     );
   }
@@ -145,5 +87,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getColleges, addCollege, deleteCollege }
+  { getColleges, deleteCollege }
 )(CollegeList);
