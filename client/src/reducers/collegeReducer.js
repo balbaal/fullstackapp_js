@@ -11,6 +11,12 @@ export default function(state = initialState, action) {
         ...state
       };
 
+    case ADD_COLLEGE:
+      return {
+        ...state,
+        colleges: [action.payload, ...state.colleges]
+      };
+
     default:
       return state;
   }

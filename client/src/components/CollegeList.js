@@ -14,17 +14,31 @@ import {
 } from "reactstrap";
 
 import { connect } from "react-redux";
-import { getColleges } from "../actions/collegeActions";
+import { getColleges, addCollege } from "../actions/collegeActions";
 
 class CollegeList extends React.Component {
-  state = {
-    modal: false
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      modal: false
+    };
+
+    this.college_input = React.createRef();
+  }
 
   toggle = () => {
     this.setState(prevState => ({
       modal: !prevState.modal
     }));
+  };
+
+  onAddCollege = () => {
+    const data = {
+      _id: Math.random(),
+      college: this.college_input.current.value
+    };
+    this.props.addCollege(data);
+    this.toggle();
   };
 
   componentDidMount() {
@@ -50,7 +64,7 @@ class CollegeList extends React.Component {
             </thead>
             <tbody>
               {colleges.map(college => (
-                <tr>
+                <tr key={college._id}>
                   <td>{college._id}</td>
                   <td>{college.college}</td>
                   <td>
@@ -89,6 +103,7 @@ class CollegeList extends React.Component {
                   <Label for="college">College Name</Label>
                   <Input
                     type="text"
+                    innerRef={this.college_input}
                     name="college"
                     id="college"
                     placeholder="with a placeholder"
@@ -97,7 +112,7 @@ class CollegeList extends React.Component {
               </Form>
             </ModalBody>
             <ModalFooter>
-              <Button color="primary" onClick={this.toggle}>
+              <Button color="primary" onClick={this.onAddCollege}>
                 Submit
               </Button>{" "}
               <Button color="secondary" onClick={this.toggle}>
@@ -117,5 +132,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getColleges }
+  { getColleges, addCollege }
 )(CollegeList);

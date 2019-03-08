@@ -5,3 +5,10 @@ export const getColleges = () => {
     type: GET_COLLEGES
   };
 };
+
+export const addCollege = data => {
+  return {
+    type: ADD_COLLEGE,
+    payload: data
+  };
+};
