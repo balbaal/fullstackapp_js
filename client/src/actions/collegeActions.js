@@ -1,9 +1,20 @@
-import { GET_COLLEGES, DELETE_COLLEGE, ADD_COLLEGE } from "./types";
+import {
+  GET_COLLEGES,
+  DELETE_COLLEGE,
+  ADD_COLLEGE,
+  COLLEGES_LOADING
+} from "./types";
 
-export const getColleges = () => {
-  return {
-    type: GET_COLLEGES
-  };
+import axios from "axios";
+
+export const getColleges = () => dispatch => {
+  dispatch(setCollegesLoading());
+  axios.get("/api/college").then(res =>
+    dispatch({
+      type: GET_COLLEGES,
+      payload: res.data.message
+    })
+  );
 };
 
 export const addCollege = data => {
@@ -17,5 +28,11 @@ export const deleteCollege = id => {
   return {
     type: DELETE_COLLEGE,
     payload: id
+  };
+};
+
+export const setCollegesLoading = () => {
+  return {
+    type: COLLEGES_LOADING
   };
 };

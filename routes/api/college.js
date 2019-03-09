@@ -24,15 +24,50 @@ router.post("/", (req, res) => {
 // @desc      Show All college
 // @access    Public
 router.get("/", (req, res) => {
-    CollegeModel.find()
-      .then(result => {
-        if (result.length > 0) {
-          res.json({ message: result, success: true }).status(200);
-        } else {
-          res.json({ message: "Data Not Available", success: false }).status(404);
-        }
+  CollegeModel.find()
+    .then(result => {
+      if (result.length > 0) {
+        res.json({ message: result, success: true }).status(200);
+      } else {
+        res.json({ message: "Data Not Available", success: false }).status(404);
+      }
+    })
+    .catch(err => res.json(err).status(500));
+});
+
+// @route   DELETE api/college/id
+// @desc    delete data college
+// @access  public
+router.delete("/:id", (req, res) => {
+  CollegeModel.findByIdAndDelete(req.params.id)
+    .then(() =>
+      res.status(200).json({
+        message: `success delete id : ${req.params.id}`,
+        success: true
       })
-      .catch(err => res.json(err).status(500));
-  });
+    )
+    .catch(err =>
+      res.status(404).json({
+        message: `failed to update id : ${req.params.id}`,
+        success: false
+      })
+    );
+});
+
+// @route   GET api/college/id
+// @desc    get detail college
+// @access  public
+router.get("/:id", (req, res) => {
+  CollegeModel.findById(req.params.id)
+    .then(result => {
+      res.json({ message: result, success: true }).status(200);
+    })
+
+    .catch(error => {
+      res
+        .json({ message: `Id ${req.params.id} not found`, success: false })
+        .status(404);
+    });
+});
 
 module.exports = router;

@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Button, Table } from "reactstrap";
+import { Container, Button, Table, Spinner } from "reactstrap";
 
 import { connect } from "react-redux";
 import { getStudents } from "../actions/studentActions";
@@ -17,7 +17,7 @@ class StudentList extends React.Component {
   }
 
   render() {
-    const { students } = this.props.student;
+    const { students, loading } = this.props.student;
     return (
       <div>
         <Container>
@@ -34,7 +34,15 @@ class StudentList extends React.Component {
               </tr>
             </thead>
             <tbody>
-              {students.length === 0 ? (
+              {loading === true ? (
+                <tr>
+                  <td colSpan="6">
+                    <h3 style={{textAlign: "center"}}>
+                      <Spinner color="primary" />
+                    </h3>
+                  </td>
+                </tr>
+              ) : students.length === 0 ? (
                 <tr>
                   <td colSpan="6">
                     <h3 style={{ textAlign: "center" }}>
@@ -47,7 +55,7 @@ class StudentList extends React.Component {
                   <tr key={student.identification_number}>
                     <td>{student.identification_number}</td>
                     <td>{student.name}</td>
-                    <td>{student.college}</td>
+                    <td>{student.college_detail[0].college}</td>
                     <td>{student.majoring}</td>
                     <td>{student.year}</td>
                     <td>

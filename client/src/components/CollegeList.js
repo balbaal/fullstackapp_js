@@ -1,24 +1,8 @@
 import React from "react";
-import {
-  Container,
-  Button,
-  Table,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Form,
-  FormGroup,
-  Label,
-  Input
-} from "reactstrap";
+import { Container, Button, Table, Spinner } from "reactstrap";
 
 import { connect } from "react-redux";
-import {
-  getColleges,
-  addCollege,
-  deleteCollege
-} from "../actions/collegeActions";
+import { getColleges, deleteCollege } from "../actions/collegeActions";
 
 import CollegeModal from "./CollegeModal";
 
@@ -33,7 +17,7 @@ class CollegeList extends React.Component {
   }
 
   render() {
-    const { colleges } = this.props.college;
+    const { colleges, loading } = this.props.college;
     return (
       <div>
         <Container>
@@ -47,7 +31,15 @@ class CollegeList extends React.Component {
               </tr>
             </thead>
             <tbody>
-              {colleges.length === 0 ? (
+              {loading === true ? (
+                <tr>
+                  <td colSpan="3">
+                    <h3 style={{ textAlign: "center" }}>
+                      <Spinner color="primary" />
+                    </h3>
+                  </td>
+                </tr>
+              ) : colleges.length === 0 ? (
                 <tr>
                   <td colSpan="3">
                     <h3 style={{ textAlign: "center" }}>

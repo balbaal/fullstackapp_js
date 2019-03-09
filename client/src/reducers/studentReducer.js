@@ -1,30 +1,22 @@
-import { ADD_STUDENT, GET_STUDENTS, DELETE_STUDENT } from "../actions/types";
-import { addStudent } from "../actions/studentActions";
+import {
+  ADD_STUDENT,
+  GET_STUDENTS,
+  DELETE_STUDENT,
+  STUDENTS_LOADING
+} from "../actions/types";
 
 const initialState = {
-  students: [
-    {
-      identification_number: "13020140099",
-      name: "Iqbal Syafri",
-      college: "Hasanuddin University",
-      majoring: "Informatics Eng",
-      year: "2015"
-    },
-    {
-      identification_number: "13020140092",
-      name: "Luthfi Al",
-      college: "Hasanuddin University",
-      majoring: "Informatics Eng",
-      year: "2015"
-    }
-  ]
+  students: [],
+  loading: false
 };
 
 export default function(state = initialState, action) {
   switch (action.type) {
     case GET_STUDENTS:
       return {
-        ...state
+        ...state,
+        students: action.payload,
+        loading: false
       };
 
     case DELETE_STUDENT:
@@ -36,14 +28,15 @@ export default function(state = initialState, action) {
       };
 
     case ADD_STUDENT:
-      // return {
-      //   students: state.students.push(action.payload),
-      //   ...state
-      // };
-
       return {
         ...state,
         students: [action.payload, ...state.students]
+      };
+
+    case STUDENTS_LOADING:
+      return {
+        ...state,
+        loading: true
       };
 
     default:
