@@ -2,7 +2,7 @@ import {
   GET_COLLEGES,
   ADD_COLLEGE,
   DELETE_COLLEGE,
-  COLLEGES_LOADING
+  LOADING
 } from "../actions/types";
 
 const initialState = {
@@ -33,7 +33,7 @@ export default function(state = initialState, action) {
         )
       };
 
-    case COLLEGES_LOADING:
+    case LOADING:
       return {
         ...state,
         loading: true

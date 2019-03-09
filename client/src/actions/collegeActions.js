@@ -1,14 +1,10 @@
-import {
-  GET_COLLEGES,
-  DELETE_COLLEGE,
-  ADD_COLLEGE,
-  COLLEGES_LOADING
-} from "./types";
+import { GET_COLLEGES, DELETE_COLLEGE, ADD_COLLEGE } from "./types";
 
 import axios from "axios";
+import { setLoading } from "./loadingActions";
 
 export const getColleges = () => dispatch => {
-  dispatch(setCollegesLoading());
+  dispatch(setLoading());
   axios.get("/api/college").then(res =>
     dispatch({
       type: GET_COLLEGES,
@@ -28,11 +24,5 @@ export const deleteCollege = id => {
   return {
     type: DELETE_COLLEGE,
     payload: id
-  };
-};
-
-export const setCollegesLoading = () => {
-  return {
-    type: COLLEGES_LOADING
   };
 };

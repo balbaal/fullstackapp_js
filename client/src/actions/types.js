@@ -6,5 +6,4 @@ export const GET_COLLEGES = "GET_COLLEGES";
 export const ADD_COLLEGE = "ADD_COLLEGE";
 export const DELETE_COLLEGE = "DELETE_COLLEGE";
 
-export const STUDENTS_LOADING = "STUDENTS_LOADING";
-export const COLLEGES_LOADING = "COLLEGES_LOADING"
+export const LOADING = "LOADING";

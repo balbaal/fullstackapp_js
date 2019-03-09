@@ -2,7 +2,7 @@ import {
   ADD_STUDENT,
   GET_STUDENTS,
   DELETE_STUDENT,
-  STUDENTS_LOADING
+  LOADING
 } from "../actions/types";
 
 const initialState = {
@@ -33,7 +33,7 @@ export default function(state = initialState, action) {
         students: [action.payload, ...state.students]
       };
 
-    case STUDENTS_LOADING:
+    case LOADING:
       return {
         ...state,
         loading: true
