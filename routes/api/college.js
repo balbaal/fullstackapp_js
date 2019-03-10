@@ -3,6 +3,7 @@ const router = express.Router();
 
 // College Schema
 const CollegeModel = require("../../models/college_model");
+const StudentModel = require("../../models/student_model");
 
 // @route       POST api/college
 // @desc        create new college
@@ -39,16 +40,41 @@ router.get("/", (req, res) => {
 // @desc    delete data college
 // @access  public
 router.delete("/:id", (req, res) => {
-  CollegeModel.findByIdAndDelete(req.params.id)
-    .then(() =>
-      res.status(200).json({
-        message: `success delete id : ${req.params.id}`,
-        success: true
-      })
-    )
+  // **
+  // search data student by college id
+  StudentModel.find({ college_id: req.params.id })
+    .lean()
+    .then(res_student => {
+      if (res_student.length > 0) {
+        // try looping to deleting all student
+        StudentModel.deleteMany({ college_id: req.params.id }).then(() => {
+          // after deleting all student, continue to deleting college
+          CollegeModel.findByIdAndDelete(req.params.id).then(() =>
+            res.status(200).json({
+              message: `success delete id : ${req.params.id}`,
+              success: true
+            })
+          );
+        });
+      } else {
+        CollegeModel.findByIdAndDelete(req.params.id)
+          .then(() =>
+            res.status(200).json({
+              message: `success delete id : ${req.params.id}`,
+              success: true
+            })
+          )
+          .catch(err =>
+            res.status(404).json({
+              message: `failed to delete id : ${req.params.id}`,
+              success: false
+            })
+          );
+      }
+    })
     .catch(err =>
-      res.status(404).json({
-        message: `failed to update id : ${req.params.id}`,
+      res.json({
+        message: `something error when find college id in student`,
         success: false
       })
     );

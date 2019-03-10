@@ -13,16 +13,20 @@ export const getColleges = () => dispatch => {
   );
 };
 
-export const addCollege = data => {
-  return {
-    type: ADD_COLLEGE,
-    payload: data
-  };
+export const deleteCollege = id => dispatch => {
+  axios.delete(`/api/college/${id}`).then(res =>
+    dispatch({
+      type: DELETE_COLLEGE,
+      payload: id
+    })
+  );
 };
 
-export const deleteCollege = id => {
-  return {
-    type: DELETE_COLLEGE,
-    payload: id
-  };
+export const addCollege = data => dispatch => {
+  axios.post("/api/college", data).then(res =>
+    dispatch({
+      type: ADD_COLLEGE,
+      payload: res.data.message
+    })
+  );
 };
