@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { addStudent } from "../actions/studentActions";
+import { getColleges } from "../actions/collegeActions";
 import {
   Button,
   Modal,
@@ -37,7 +38,7 @@ class StudentModal extends Component {
     const data = {
       identification_number: this.identification_number_input.current.value,
       majoring: this.majoring_input.current.value,
-      college: this.college_input.current.value,
+      college_id: Number(this.college_input.current.value),
       year: this.year_input.current.value,
       name: this.name_input.current.value
     };
@@ -46,7 +47,12 @@ class StudentModal extends Component {
     this.toggle();
   };
 
+  componentDidMount() {
+    this.props.getColleges();
+  }
+
   render() {
+    const { colleges } = this.props.college;
     return (
       <div>
         <Button className="newData-btn" onClick={this.toggle}>
@@ -90,10 +96,13 @@ class StudentModal extends Component {
                     id="college"
                   >
                     <option value={0}>- Select College -</option>
-                    <option value={2}>2</option>
-                    <option value={3}>3</option>
-                    <option value={4}>4</option>
-                    <option value={5}>5</option>
+                    {colleges.map(college => {
+                      return (
+                        <option key={college._id} value={college._id}>
+                          {college.college}
+                        </option>
+                      );
+                    })}
                   </Input>
                   <Label for="majoring">Majoring</Label>
                   <Input
@@ -129,11 +138,12 @@ class StudentModal extends Component {
   }
 }
 
-// const mapStateToProps = state => ({
-//   student: state.student
-// });
+const mapStateToProps = state => ({
+  student: state.student,
+  college: state.college
+});
 
 export default connect(
-  null,
-  { addStudent }
+  mapStateToProps,
+  { addStudent, getColleges }
 )(StudentModal);

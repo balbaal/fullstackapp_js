@@ -23,7 +23,7 @@ export default function(state = initialState, action) {
       return {
         ...state,
         students: state.students.filter(
-          student => student.identification_number !== action.payload
+          student => student._id !== action.payload
         )
       };
 

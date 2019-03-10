@@ -3,6 +3,7 @@ const router = express.Router();
 
 // Student Model Schema
 const StudentModel = require("../../models/student_model");
+const CollegeModel = require("../../models/college_model");
 
 // @route       POST api/student
 // @desc        Create New Student
@@ -11,14 +12,30 @@ router.post("/", (req, res) => {
   const newStudent = new StudentModel({
     name: req.body.name,
     identification_number: req.body.identification_number,
-    college_id: req.body.college_id,
+    college_id: Number(req.body.college_id),
     year: req.body.year,
     majoring: req.body.majoring
   });
 
   newStudent
     .save()
-    .then(result => res.status(201).json({ message: result, success: true }))
+    .then(result => {
+      CollegeModel.findOne({ _id: result.college_id })
+        .lean()
+        .then(result1 => {
+          let final_res = result.toObject();
+          final_res["college_detail"] = [result1];
+          res.status(201).json({ message: final_res, success: true });
+        })
+        .catch(err =>
+          res
+            .json({
+              message: "failed to search college after insert",
+              success: false
+            })
+            .status(400)
+        );
+    })
     .catch(err =>
       res
         .json({ message: "failed to make new student", success: false })

@@ -12,16 +12,20 @@ export const getStudents = () => dispatch => {
   );
 };
 
-export const deleteStudent = id => {
-  return {
-    type: DELETE_STUDENT,
-    payload: id
-  };
+export const deleteStudent = id => dispatch => {
+  axios.delete(`/api/student/${id}`).then(res =>
+    dispatch({
+      type: DELETE_STUDENT,
+      payload: id
+    })
+  );
 };
 
-export const addStudent = data => {
-  return {
-    type: ADD_STUDENT,
-    payload: data
-  };
+export const addStudent = data => dispatch => {
+  axios.post("/api/student", data).then(res =>
+    dispatch({
+      type: ADD_STUDENT,
+      payload: res.data.message
+    })
+  );
 };

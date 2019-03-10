@@ -52,7 +52,7 @@ class StudentList extends React.Component {
                 </tr>
               ) : (
                 students.map(student => (
-                  <tr key={student.identification_number}>
+                  <tr key={student._id}>
                     <td>{student.identification_number}</td>
                     <td>{student.name}</td>
                     <td>{student.college_detail[0].college}</td>
@@ -61,7 +61,7 @@ class StudentList extends React.Component {
                     <td>
                       <Button
                         onClick={() =>
-                          this.onDeleteStudent(student.identification_number)
+                          this.onDeleteStudent(student._id)
                         }
                         className="remove-btn"
                         color="danger"
